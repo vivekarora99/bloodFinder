@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>JSG.....</title>
+        <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script type="text/javascript" src="js/angular.min.js"></script>
+     <script type="text/javascript">
+        
+        var myapp=angular.module("app",[]);
+        myapp.controller("myController",function($scope,$http)
+        {
+            $scope.jsonArray=[];
+            
+            $scope.fetchAll=function()
+            {
+                $http.get("angular-json-blood-fetchall-donor-process.php").then(sokhe,okhe);
+                function sokhe($jsonArray)
+                {
+                    $scope.jsonArray=$jsonArray.data;
+                    //alert(JSON.stringify($scope.jsonArray));
+                    /*for(i=0;i<$scope.jsonArray.length;i++)
+                        alert($scope.jsonArray[i].did);*/
+                }
+                function okhe(error)
+                {
+                    
+                    alert(error.data);
+                }
+            }
+            
+        });
+    
+    
+    
+    </script>
+    </head>
+    <body ng-app="app" ng-controller="myController">
+     <br>
+      <input type="button" class="btn btn-danger" ng-click="fetchAll();" value="fetch all Donors Records">
+    <hr>
+    <center>
+    <input type="text" class="btn btn-outline-danger" ng-model="srch" placeholder="Search">
+    </center>
+    <table class="table">
+       <thead class="thead-light">
+           <tr><th>Donor ID</th><th>Name</th><th>Age</th><th>Blood Group</th><th>Gender</th><th>Address</th><th>City</th><th>Mobile</th><th>No of times blood donated</th><th>Medical History</th><th>Profile Pic</th>
+        </thead>
+        <tr ng-repeat="record in jsonArray | filter:srch">
+               <td>{{record.did}}</td>
+             <td>{{record.name}}</td>
+             <td>{{record.age}}</td>
+             <td>{{record.bloodgrp}}</td>
+             <td>{{record.gender}}</td>
+             <td>{{record.address}}</td>
+             <td>{{record.city}}</td>
+             <td>{{record.mobile}}</td>
+             <td>{{record.number}}</td>
+             <td>{{record.medical}}</td>
+             <td><img ng-src="uploads/{{record.orgname}}" height="100px" width="100px" ></td>
+            
+        </tr>
+    </table>  
+    </body>
+</html>

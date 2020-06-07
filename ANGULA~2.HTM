@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <title>JSG.....</title>
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var myapp = angular.module("app", []);
+        myapp.controller("myController", function($scope, $http) {
+            $scope.jsonArray = [];
+
+            $scope.fetchAll = function() {
+                $http.get("angular-json-blood-fetchall-needy-process.php").then(sokhe, okhe);
+
+                function sokhe($jsonArray) {
+                    $scope.jsonArray = $jsonArray.data;
+                    //alert(JSON.stringify($scope.jsonArray));
+                    /*for(i=0;i<$scope.jsonArray.length;i++)
+                        alert($scope.jsonArray[i].did);*/
+                }
+
+                function okhe(error) {
+
+                    alert(error.data);
+                }
+            }
+
+        });
+
+    </script>
+</head>
+
+<body ng-app="app" ng-controller="myController">
+    <br>
+    <input type="button" class="btn btn-danger" ng-click="fetchAll();" value="fetch all Needy Records">
+    <hr>
+    <center>
+        <input type="text" class="btn btn-outline-danger" ng-model="srch" placeholder="Search">
+    </center>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Needy ID</th>
+                <th>Needy's NAME</th>
+                <th>ID Proof</th>
+                <th>orgname</th>
+                <th>Mobile</th>
+
+                <th>Address</th>
+                <th>City</th>
+
+        </thead>
+        <tr ng-repeat="record in jsonArray | filter:srch">
+            <td>{{record.nid}}</td>
+            <td>{{record.name}}</td>
+            <td>{{record.idproof}}</td>
+            <td>{{record.orgname}}</td>
+            <td>{{record.mobile}}</td>
+            <td>{{record.address}}</td>
+            <td>{{record.city}}</td>
+
+
+
+        </tr>
+    </table>
+</body>
+
+</html>
